@@ -16,19 +16,23 @@ class TrainHelper():
         self.header = {}
         self.zidian = {u'yz_num':u'硬座', u'rz_num':u'软座', u'yw_num':u'硬卧', u'rw_num':u'软卧', u'zy_num':u'一等', u'ze_num':u'二等',
             u'wz_num':u'无座', u'qt_num':u'其他'}
-        self.__init_paras()
+       #  self.zidian = {u'硬座':u'yz_num', u'软座':u'rz_num', u'硬卧':u'yw_num', u'软卧':u'rw_num', u'一等':u'zy_num', u'二等':u'ze_num',
+       #      u'无座':u'wz_num', u'其他':u'qt_num'}
         self.ticketNum = {}
+        self.seats = []
+        self.__init_paras()
 
     def acqureTick(self):
         for d in self.Dates:
-            ticket_num = self.getTicketNum(d.strftime('%Y-%m-%d'))
-            print d
+            str_date = d.strftime('%Y-%m-%d')
+            ticket_num = self.getTicketNum(str_date)
+            print str_date
             self.printTicketNum(ticket_num)
 
     def getTicketNum(self, the_date):
         url = self.__makeGetUrl(the_date)
         data = self.getTicketInfo(url)
-        self.ticketNum = {}
+        ticketNum = {}
         for train in data:
             train_info = train['queryLeftNewDTO']
             train_No = train_info['station_train_code']
@@ -38,14 +42,14 @@ class TrainHelper():
                 num[k] = train_info[k]
           #       if train['queryLeftNewDTO'][k] != u'无' and train['queryLeftNewDTO'][k] != u'--' :
           #           print (u"傻逼！快去看12306，有{0}票了！！！".format(k))
-            self.ticketNum[train_No] = num
-        return self.ticketNum
+            ticketNum[train_No] = num
+        return ticketNum
 
     def printTicketNum(self, ticket_num):
         print "{0:<3} -> {1:<3}".format(self.fromStation, self.toStation,)
         for train in ticket_num:
             print(u'车次: {0:^5}'.format(train)),
-            for (k,v) in self.ticketNum[train].items():
+            for (k,v) in ticket_num[train].items():
                 print(u"{0}:{1}".format(self.zidian[k], v)),
             print ''
 
@@ -78,6 +82,7 @@ class TrainHelper():
             begin_date = begin_date + datetime.timedelta(days=1)
 
         self.personType = config.get('PersonType', 'Type')
+
         fromStation = unicode(config.get('StationInfo', 'FromStation'), 'utf-8')
         toStation = unicode(config.get('StationInfo', 'ToStation'), 'utf-8')
         with open('stationName.ini') as f:
@@ -85,6 +90,12 @@ class TrainHelper():
             js = json.loads(text)
             self.fromStation = js[fromStation]
             self.toStation = js[toStation]
+
+        seat_info = config.items('SeatInfo')
+        for seat_type, value in seat_info:
+            if value == '1' :
+                self.seats.append(unicode(seat_type, 'utf-8'))
+                print (unicode(seat_type, 'utf-8'))
 
 
 if __name__ == '__main__':
