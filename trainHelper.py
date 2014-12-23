@@ -6,6 +6,7 @@ import json
 import time
 import ConfigParser
 import datetime
+import collections
 
 
 
@@ -14,10 +15,10 @@ class TrainHelper():
 
     def __init__(self):
         self.header = {}
-        self.zidian = {u'yz_num':u'硬座', u'rz_num':u'软座', u'yw_num':u'硬卧', u'rw_num':u'软卧', u'zy_num':u'一等', u'ze_num':u'二等',
-            u'wz_num':u'无座', u'qt_num':u'其他'}
-       #  self.zidian = {u'硬座':u'yz_num', u'软座':u'rz_num', u'硬卧':u'yw_num', u'软卧':u'rw_num', u'一等':u'zy_num', u'二等':u'ze_num',
-       #      u'无座':u'wz_num', u'其他':u'qt_num'}
+       #  self.zidian = {u'yz_num':u'硬座', u'rz_num':u'软座', u'yw_num':u'硬卧', u'rw_num':u'软卧', u'zy_num':u'一等', u'ze_num':u'二等',
+       #      u'wz_num':u'无座', u'qt_num':u'其他'}
+        self.zidian = {u'硬座':u'yz_num', u'软座':u'rz_num', u'硬卧':u'yw_num', u'软卧':u'rw_num', u'一等':u'zy_num', u'二等':u'ze_num',
+            u'无座':u'wz_num', u'其他':u'qt_num'}
         self.ticketNum = {}
         self.seats = []
         self.__init_paras()
@@ -37,9 +38,9 @@ class TrainHelper():
             train_info = train['queryLeftNewDTO']
             train_No = train_info['station_train_code']
             self.ticketNum[train_No] = {}
-            num = {}
-            for k in self.zidian:
-                num[k] = train_info[k]
+            num = collections.OrderedDict()
+            for k in self.seats:
+                num[k] = train_info[self.zidian[k]]
           #       if train['queryLeftNewDTO'][k] != u'无' and train['queryLeftNewDTO'][k] != u'--' :
           #           print (u"傻逼！快去看12306，有{0}票了！！！".format(k))
             ticketNum[train_No] = num
@@ -50,7 +51,7 @@ class TrainHelper():
         for train in ticket_num:
             print(u'车次: {0:^5}'.format(train)),
             for (k,v) in ticket_num[train].items():
-                print(u"{0}:{1}".format(self.zidian[k], v)),
+                print(u"{0}:{1}".format(k, v)),
             print ''
 
     def getTicketInfo(self, url):
@@ -95,8 +96,6 @@ class TrainHelper():
         for seat_type, value in seat_info:
             if value == '1' :
                 self.seats.append(unicode(seat_type, 'utf-8'))
-                print (unicode(seat_type, 'utf-8'))
-
 
 if __name__ == '__main__':
     hh = TrainHelper()
