@@ -25,6 +25,7 @@ class TrainHelper():
 
     def auto_acqure(self):
         while 1:
+            print time.ctime()
             for d in self.Dates:
                 str_date = d.strftime('%Y-%m-%d')
                 ticket_num = self.getTicketNum(str_date)
@@ -33,7 +34,7 @@ class TrainHelper():
                         if v != u'无' and v != u'--' :
                             print u'有票啦！！',
                             print(u'{0:^5} {1:^5} {2:^2}票 '.format(str_date, train, k))
-            time.sleep(6)
+            time.sleep(60)
 
     def acqureTick(self):
         for d in self.Dates:
