@@ -32,8 +32,9 @@ class TrainHelper():
                 for train in ticket_num:
                     for (k,v) in ticket_num[train].items():
                         if v != u'无' and v != u'--' :
-                            print u'有票啦！！',
-                            print(u'{0:^5} {1:^5} {2:^2}票 '.format(str_date, train, k))
+                            print u'有票啦！！！！！！！！！！！！'
+                            print(u'{3}->{4}: {0:^5} {1:^5} {2:^2}票 '.format(str_date, train, k,
+                                self.fromStation, self.toStation))
             time.sleep(60)
 
     def acqureTick(self):
