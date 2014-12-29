@@ -5,7 +5,6 @@
 import requests
 from PIL import Image
 from StringIO import StringIO
-import pylab
 
 
 
@@ -17,12 +16,24 @@ def login():
     url2 = "https://kyfw.12306.cn/otn/passcodeNew/getPassCodeNew?module=login&rand=sjrand";
     r2 = s.get(url2, verify = False)
     i = Image.open(StringIO(r2.content))
-    pylab.subplot(111)
-    pylab.imshow(i)
-    pylab.show()
     i.show()
 
-    yanzhengma = raw_input('')
+    codeStr = raw_input('')
+
+    print '-------------check code'
+    ajaxUrl = 'https://kyfw.12306.cn/otn/passcodeNew/checkRandCodeAnsy'
+    dc = {'randCode' : codeStr,
+            'rand':'sjrand'}
+    r3 = s.get(ajaxUrl, verify = False, params=dc)
+
+    LoginUrl = "http://kyfw.12306.cn/otn/login/loginAysnSuggest"
+    dc = {
+        'randCode'      :  codeStr,
+        'userDTO.password'     : "sunyuke1989",
+        'loginUserDTO.user_name': "sunyuke@qq.com"
+    }
+    r4 = s.post(LoginUrl, data=dc)
+    print r4.text
 
 
 if __name__ == '__main__':
