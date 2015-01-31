@@ -80,4 +80,4 @@ class Tickets():
 
 if __name__ == '__main__':
     t = Tickets('LFV', 'BJP', '2015-03-01', 'ADULT')
-    t.tickets_info()
+    print t.tickets_info()
