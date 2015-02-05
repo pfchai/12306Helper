@@ -16,15 +16,22 @@ class Tickets():
         self.toStation = toStation
         self.queryDate = queryDate
         self.passType = passType
+        self.ticketsInfo = None
 
     def tickets_info(self):
         " 返回查询到的车票信息 "
+        return self.ticketsInfo
+        pass
+
+    def get_tickets_info(self):
+        """ 查询车票信息 """
         req = self.__get_request()
         content = self.__process_data(req.content)
         if content == -1:
             raise TicketsException
         if content['data']['flag']:
-            return content['data']['datas']
+            self.ticketsInfo = content['data']['datas']
+            return self.ticketsInfo
         else:
             raise TicketsException
 

@@ -25,12 +25,14 @@ def login():
     dc = {'randCode' : codeStr,
             'rand':'sjrand'}
     r3 = s.get(ajaxUrl, verify = False, params=dc)
+    print r3
 
     LoginUrl = "http://kyfw.12306.cn/otn/login/loginAysnSuggest"
     dc = {
         'randCode'      :  codeStr,
         'userDTO.password'     : "sunyuke1989",
-        'loginUserDTO.user_name': "sunyuke@qq.com"
+        'loginUserDTO.user_name': "sunyuke@qq.com",
+        "NDgyMjA2" :  "NDVlNGE4YzZhMmJmMTI3ZQ=="
     }
     r4 = s.post(LoginUrl, data=dc)
     print r4.text

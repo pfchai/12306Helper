@@ -11,6 +11,15 @@ class TicketsData:
         self.dataTitle = self.beautifulFormat.format(u'车次', u'出发时间', u'到达时间', u'历时', u'商务座', u'特等座', u'一等座',
                 u'二等座', u'高级软卧', u'软卧', u'硬卧', u'软座', u'硬座', u'无座', u'其他')
         self.beautifulData = self.dataTitle
+        self.isTickets = False
+        seatType = [u'swz_num', u'gg_num', u'zy_num', u'ze_num', u'gr_num', u'rw_num', u'yw_num', u'rz_num', u'yz_num', u'wz_num', u'qt_num']
+        for d in self.data:
+            for t in seatType:
+                if d[t] != u'--' or d[t] != u'无':
+                    self.isTickets = True
+
+    def had_tickets(self):
+        return self.isTickets
 
     def format_data(self, data):
         pass
