@@ -30,8 +30,8 @@ def login():
     LoginUrl = "http://kyfw.12306.cn/otn/login/loginAysnSuggest"
     dc = {
         'randCode'      :  codeStr,
-        'userDTO.password'     : "sunyuke1989",
-        'loginUserDTO.user_name': "sunyuke@qq.com",
+        'userDTO.password'     : "******",
+        'loginUserDTO.user_name': "******",
         "NDgyMjA2" :  "NDVlNGE4YzZhMmJmMTI3ZQ=="
     }
     r4 = s.post(LoginUrl, data=dc)
